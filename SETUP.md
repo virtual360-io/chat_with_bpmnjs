@@ -1,39 +1,69 @@
 # Setup do chat_with_bpmnjs
 
-## 📍 Localização
+## 📋 Pré-requisitos
 
-O repositório foi criado em:
+- `bash` (≥ 3.2)
+- `xmllint` (libxml2)
+- `xsltproc` (libxslt)
+
+### Instalar Dependências
+
+**macOS:**
+```bash
+brew install libxml2 libxslt
 ```
-/Users/victorcampos/Workspace/chat_with_bpmnjs
+
+**Ubuntu/Debian:**
+```bash
+sudo apt-get install libxml2-utils libxslt1-tools
 ```
 
-## ✅ O que foi criado
+**CentOS/RHEL:**
+```bash
+sudo yum install libxml2 libxslt
+```
 
-- ✅ **navigator.sh** - Script principal para análise de BPMN
-- ✅ **SKILL.md** - Definição da skill para Claude Code
-- ✅ **README.md** - Documentação completa
-- ✅ **DEVELOPMENT.md** - Guia de desenvolvimento
-- ✅ **INTEGRATION.md** - Como integrar ao v360
-- ✅ **LICENSE** - MIT License
-- ✅ **.gitignore** - Padrão Git
-- ✅ Commit inicial no git
-
-## 🚀 Próximas Etapas
-
-### Opção 1: Usar Localmente (Rápido)
+## 🚀 Instalação Rápida
 
 ```bash
-cd /Users/victorcampos/Workspace/chat_with_bpmnjs
-./navigator.sh "/Users/victorcampos/Downloads/Fluxo de Material - Brasil.bpmn" summary
+# Clonar repositório
+git clone git@github.com:virtual360-io/chat_with_bpmnjs.git
+cd chat_with_bpmnjs
+
+# Tornar script executável
+chmod +x navigator.sh
+
+# Testar
+./navigator.sh "/caminho/seu_processo.bpmn" summary
 ```
 
-### Opção 2: Integrar como Submodule do v360
+## 🎯 Uso Básico
 
 ```bash
-# No diretório do v360
-cd /Users/victorcampos/Workspace/v360
+# Resumo do processo
+./navigator.sh "arquivo.bpmn" summary
 
-# Adicionar como submodule
+# Listar tarefas de usuário
+./navigator.sh "arquivo.bpmn" nodes userTask
+
+# Buscar por palavra-chave
+./navigator.sh "arquivo.bpmn" search "validar"
+
+# Explorar fluxo (3 níveis para frente)
+./navigator.sh "arquivo.bpmn" neighbors "Início" 3 out
+
+# Encontrar caminho entre dois nós
+./navigator.sh "arquivo.bpmn" path "Início" "Fim"
+```
+
+## 🔗 Integração com v360
+
+### Opção 1: Como Submodule (Recomendado)
+
+```bash
+cd /path/to/v360
+
+# Adicionar submodule
 git submodule add git@github.com:virtual360-io/chat_with_bpmnjs.git .claude/skills/chat_with_bpmnjs
 
 # Commit
@@ -41,85 +71,101 @@ git add .gitmodules .claude/skills/chat_with_bpmnjs
 git commit -m "chore: add chat_with_bpmnjs as submodule"
 ```
 
-### Opção 3: Usar Symlink (Desenvolvimento)
+### Opção 2: Como Symlink (Desenvolvimento)
 
 ```bash
-# No diretório do v360
-cd /Users/victorcampos/Workspace/v360/.claude/skills
+cd /path/to/v360/.claude/skills
 
-# Criar symlink
-ln -s /Users/victorcampos/Workspace/chat_with_bpmnjs chat_with_bpmnjs
+# Criar symlink para seu clone local
+ln -s /path/to/chat_with_bpmnjs chat_with_bpmnjs
 ```
 
-## 🔗 Integração com Claude Code
+## 🎓 Usar como Skill no Claude Code
 
-Após integrar (opção 2 ou 3), a skill `/bpmn` estará disponível:
+Após integrar ao v360, a skill `/bpmn` estará disponível:
 
 ```bash
-/bpmn "/caminho/seu_processo.bpmn" "Faça um resumo"
+/bpmn "/caminho/seu_processo.bpmn" "Faça um resumo do fluxo"
 ```
 
-## 📝 Comandos Disponíveis
+### Exemplos
 
 ```bash
-# Resumo
-./navigator.sh "arquivo.bpmn" summary
+# Analisar gargalos
+/bpmn "processo.bpmn" "Quais são os gargalos?"
 
-# Listar tarefas
-./navigator.sh "arquivo.bpmn" nodes userTask
+# Entender fluxos de erro
+/bpmn "processo.bpmn" "Como são tratados os erros?"
 
-# Buscar
-./navigator.sh "arquivo.bpmn" search "Validar"
-
-# Explorar fluxo
-./navigator.sh "arquivo.bpmn" neighbors "Início" 3 out
-
-# Encontrar caminho
-./navigator.sh "arquivo.bpmn" path "Início" "Fim"
+# Validar processo
+/bpmn "processo.bpmn" "Há algum ponto de falha?"
 ```
 
-## 🐙 Push para GitHub (Opcional)
+## 📝 Estrutura de Arquivos
 
-Se quiser colocar no GitHub:
-
-```bash
-cd /Users/victorcampos/Workspace/chat_with_bpmnjs
-
-# Adicionar remote (substitua com seu repo)
-git remote add origin git@github.com:virtual360-io/chat_with_bpmnjs.git
-
-# Push
-git branch -M main
-git push -u origin main
 ```
-
-## ✨ Próximas Melhorias
-
-Com o repositório pronto, você pode:
-
-1. **Adicionar testes** - `test.sh` para validar comandos
-2. **CI/CD** - GitHub Actions para validar BPMN files
-3. **Documentação** - Expandir exemplos de uso
-4. **Novos comandos** - Adicionar análises avançadas
-5. **Performance** - Otimizar para BPMNs grandes (1000+ nós)
+chat_with_bpmnjs/
+├── navigator.sh      # Script principal
+├── SKILL.md          # Definição da skill para Claude Code
+├── README.md         # Documentação completa
+├── DEVELOPMENT.md    # Guia para contribuidores
+├── INTEGRATION.md    # Integração com v360
+├── SETUP.md          # Este arquivo
+├── LICENSE           # MIT License
+└── .gitignore        # Padrão Git
+```
 
 ## 📚 Documentação
 
-- **README.md** - Guia de uso geral
-- **SKILL.md** - Como usar no Claude Code
-- **DEVELOPMENT.md** - Para contribuidores
-- **INTEGRATION.md** - Como integrar ao v360
-- **LICENSE** - MIT License
+- **README.md** - Guia de uso completo com exemplos
+- **SKILL.md** - Como usar no Claude Code (instruções para IA)
+- **DEVELOPMENT.md** - Arquitetura e roadmap
+- **INTEGRATION.md** - Guia de integração com v360
 
-## 🆘 Suporte
+## 🧪 Validar Instalação
 
-Para dúvidas:
-1. Verifique `README.md`
-2. Veja exemplos em `SKILL.md`
-3. Consult `DEVELOPMENT.md` para debug
+```bash
+# Verificar dependências
+which xmllint xsltproc
+
+# Testar com arquivo BPMN de exemplo
+./navigator.sh "seu_arquivo.bpmn" summary
+
+# Se vir "=== BPMN Summary ===" - está funcionando! ✅
+```
+
+## 🆘 Troubleshooting
+
+### Erro: "xmllint: not found"
+Instale libxml2 conforme seção de pré-requisitos.
+
+### Script retorna erro
+```bash
+# Debug com bash -x
+bash -x navigator.sh "arquivo.bpmn" summary
+
+# Validar arquivo BPMN
+xmllint --noout "arquivo.bpmn"
+```
+
+### Skill não aparece no Claude Code
+1. Certifique-se que `SKILL.md` está presente
+2. Reinicie Claude Code
+3. Verifique permissões: `chmod +x navigator.sh`
+
+## 🤝 Contribuindo
+
+Veja [DEVELOPMENT.md](DEVELOPMENT.md) para:
+- Como adicionar novos comandos
+- Padrões de codificação
+- Roadmap de funcionalidades
+
+## 📄 Licença
+
+MIT License - veja [LICENSE](LICENSE)
 
 ---
 
-**Status**: ✅ Repositório criado e pronto para uso!
+**Pronto para usar!** 🚀
 
-Próximo passo: Integrar ao v360 (Opção 2 ou 3 acima).
+Próximo passo: Integrar ao v360 (Opção 1 ou 2 acima) ou testar localmente.
