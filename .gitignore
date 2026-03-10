@@ -1,0 +1,27 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.sublime-*
+
+# Bash/Shell
+*.log
+*.tmp
+
+# Test files
+test_output/
+*.bpmn.test
+
+# Dependencies (if any)
+node_modules/
+vendor/bundle/
+
+# Cache
+.cache/
+*.cache
