@@ -1,224 +1,223 @@
-# Integration with Claude Code
+# Integração com Claude Code
 
-This tool can be integrated with Claude Code as a skill to provide interactive BPMN process analysis.
+Esta ferramenta pode ser integrada ao Claude Code como uma skill para fornecer análise interativa de processos BPMN.
 
-## Prerequisites
+## Pré-requisitos
 
-- Claude Code installed and configured
-- `chat_with_bpmnjs` repository cloned locally
-- Dependencies installed (see SETUP.md)
+- Claude Code instalado e configurado
+- Repositório `chat_with_bpmnjs` clonado localmente
+- Dependências instaladas (ver SETUP.md)
 
-## Installation Methods
+## Métodos de Instalação
 
-### Method 1: Symlink (Development)
+### Método 1: Symlink (Desenvolvimento)
 
-For local development or quick testing:
+Para desenvolvimento local ou teste rápido:
 
 ```bash
-# Clone or navigate to your chat_with_bpmnjs directory
-cd /path/to/chat_with_bpmnjs
+# Clone ou navegue para seu diretório chat_with_bpmnjs
+cd /caminho/para/chat_with_bpmnjs
 chmod +x navigator.sh
 
-# Create symlink in Claude Code skills directory
-# Adjust path based on your Claude Code setup
+# Crie symlink no diretório de skills do Claude Code
+# Ajuste o caminho conforme sua instalação do Claude Code
 ln -s "$(pwd)" ~/.claude/skills/bpmn
 
-# Or manually:
-ln -s /path/to/chat_with_bpmnjs ~/.claude/skills/bpmn
+# Ou manualmente:
+ln -s /caminho/para/chat_with_bpmnjs ~/.claude/skills/bpmn
 ```
 
-### Method 2: Git Submodule (Recommended)
+### Método 2: Git Submodule (Recomendado)
 
-For projects using git, add as a submodule:
+Para projetos que usam git, adicione como submodule:
 
 ```bash
-cd /path/to/your/project
+cd /caminho/para/seu/projeto
 
-# Add submodule to .claude/skills
+# Adicione submodule a .claude/skills
 git submodule add git@github.com:virtual360-io/chat_with_bpmnjs.git .claude/skills/bpmn
 
 # Commit
 git add .gitmodules .claude/skills/bpmn
-git commit -m "chore: add chat_with_bpmnjs as skill submodule"
+git commit -m "chore: adicionar chat_with_bpmnjs como skill submodule"
 ```
 
-### Method 3: Direct Copy
+### Método 3: Cópia Direta
 
-For isolated environments:
+Para ambientes isolados:
 
 ```bash
-cd /path/to/your/project
-cp -r /path/to/chat_with_bpmnjs .claude/skills/bpmn
+cd /caminho/para/seu/projeto
+cp -r /caminho/para/chat_with_bpmnjs .claude/skills/bpmn
 ```
 
-## Verifying Installation
+## Validando a Instalação
 
-After installation, verify the skill is recognized:
+Após a instalação, valide se a skill foi reconhecida:
 
 ```bash
-# Check if SKILL.md exists
+# Verifique se SKILL.md existe
 ls -la ~/.claude/skills/bpmn/SKILL.md
 
-# Or for project-specific:
+# Ou para projeto específico:
 ls -la .claude/skills/bpmn/SKILL.md
 
-# Make script executable
+# Torne o script executável
 chmod +x ~/.claude/skills/bpmn/navigator.sh
 ```
 
-## Using the Skill
+## Usando a Skill
 
-Once installed, use the `/bpmn` skill in Claude Code:
-
-```bash
-/bpmn "/path/to/your/process.bpmn" "Analyze the flow"
-```
-
-### Examples
+Após instalada, use a skill `/bpmn` no Claude Code:
 
 ```bash
-# Get overview
-/bpmn "process.bpmn" summary
-
-# Identify bottlenecks
-/bpmn "process.bpmn" "What are the bottlenecks?"
-
-# Find error handling paths
-/bpmn "process.bpmn" "How are errors handled?"
-
-# Suggest improvements
-/bpmn "process.bpmn" "Suggest improvements"
+/bpmn "/caminho/seu/processo.bpmn" "Analise o fluxo"
 ```
 
-## Directory Structure
+### Exemplos
 
-Expected structure in your Claude Code setup:
+```bash
+# Obter visão geral
+/bpmn "processo.bpmn" summary
+
+# Identificar gargalos
+/bpmn "processo.bpmn" "Quais são os gargalos?"
+
+# Encontrar caminhos de tratamento de erro
+/bpmn "processo.bpmn" "Como os erros são tratados?"
+
+# Sugerir melhorias
+/bpmn "processo.bpmn" "Sugira melhorias"
+```
+
+## Estrutura de Diretório
+
+Estrutura esperada na instalação do Claude Code:
 
 ```
 .claude/
 └── skills/
-    └── bpmn/                  # or named differently
-        ├── navigator.sh       # Main script
-        ├── SKILL.md           # Skill metadata
-        ├── README.md          # Documentation
-        ├── DEVELOPMENT.md     # Dev guide
+    └── bpmn/                  # ou com outro nome
+        ├── navigator.sh       # Script principal
+        ├── SKILL.md           # Metadata da skill
+        ├── README.md          # Documentação
+        ├── DEVELOPMENT.md     # Guia de desenvolvimento
         ├── LICENSE            # MIT License
-        └── .gitignore         # Git ignore rules
+        └── .gitignore         # Regras Git
 ```
 
-## Updating
+## Atualizando
 
-### For Symlinked Version
-No action needed - always uses latest from source directory.
+### Para Versão com Symlink
+Nenhuma ação necessária - sempre usa a versão mais recente do diretório origem.
 
-### For Submodule Version
+### Para Versão com Submodule
 
 ```bash
-# Update to latest version
+# Atualizar para a versão mais recente
 git submodule update --remote .claude/skills/bpmn
 
-# Or manually pull
+# Ou fazer pull manual
 cd .claude/skills/bpmn
 git pull origin main
 cd ../..
 
-# Commit update
+# Commit da atualização
 git add .claude/skills/bpmn
-git commit -m "chore: update bpmn skill submodule"
+git commit -m "chore: atualizar submodule chat_with_bpmnjs"
 ```
 
-### For Copied Version
+### Para Versão Copiada
 
 ```bash
-# Remove old copy
+# Remover cópia antiga
 rm -rf .claude/skills/bpmn
 
-# Copy new version
-cp -r /path/to/chat_with_bpmnjs .claude/skills/bpmn
+# Copiar nova versão
+cp -r /caminho/para/chat_with_bpmnjs .claude/skills/bpmn
 ```
 
-## Troubleshooting
+## Solução de Problemas
 
-### Skill Not Recognized
+### Skill não é reconhecida
 
-1. **Check file exists:**
+1. **Verifique se o arquivo existe:**
 ```bash
 ls -la ~/.claude/skills/bpmn/SKILL.md
 ```
 
-2. **Verify permissions:**
+2. **Verifique permissões:**
 ```bash
 chmod +x ~/.claude/skills/bpmn/navigator.sh
 ```
 
-3. **Restart Claude Code** - Skills are cached on startup
+3. **Reinicie Claude Code** - Skills são carregadas ao iniciar
 
-4. **Clear skill cache (if supported):**
+4. **Limpe o cache de skills (se suportado):**
 ```bash
-# Location varies by OS/installation
+# O local varia conforme SO/instalação
 rm -rf ~/.cache/claude-code/skills
 ```
 
-### Script Execution Fails
+### Script falha na execução
 
-1. **Verify dependencies:**
+1. **Verifique dependências:**
 ```bash
 which xmllint xsltproc bash
 ```
 
-2. **Test directly:**
+2. **Teste diretamente:**
 ```bash
-~/.claude/skills/bpmn/navigator.sh "your_file.bpmn" summary
+~/.claude/skills/bpmn/navigator.sh "seu_arquivo.bpmn" summary
 ```
 
-3. **Debug mode:**
+3. **Modo debug:**
 ```bash
-bash -x ~/.claude/skills/bpmn/navigator.sh "your_file.bpmn" summary
+bash -x ~/.claude/skills/bpmn/navigator.sh "seu_arquivo.bpmn" summary
 ```
 
-### Permission Denied
+### Permissão negada
 
 ```bash
-# Fix permissions
+# Corrija permissões
 chmod +x ~/.claude/skills/bpmn/navigator.sh
-chmod +x ~/.claude/skills/bpmn/navigator.sh
 ```
 
-## Integration Patterns
+## Padrões de Integração
 
-### Pattern 1: Local Analysis
+### Padrão 1: Análise Local
 
-Use for quick analysis of local BPMN files:
+Use para análise rápida de arquivos BPMN locais:
 
 ```bash
-/bpmn "~/Downloads/my_process.bpmn" "Identify critical paths"
+/bpmn "~/Downloads/meu_processo.bpmn" "Identifique caminhos críticos"
 ```
 
-### Pattern 2: Project Documentation
+### Padrão 2: Documentação do Projeto
 
-Store BPMNs in project and analyze during development:
+Armazene BPMNs no projeto e analise durante desenvolvimento:
 
 ```bash
-/bpmn ".docs/processes/workflow.bpmn" "Generate improvement suggestions"
+/bpmn ".docs/processos/workflow.bpmn" "Gere sugestões de melhorias"
 ```
 
-### Pattern 3: Batch Analysis
+### Padrão 3: Análise em Lote
 
-Script multiple analyses:
+Script múltiplas análises:
 
 ```bash
-for file in .docs/processes/*.bpmn; do
-  echo "=== Analyzing $file ==="
+for file in .docs/processos/*.bpmn; do
+  echo "=== Analisando $file ==="
   /bpmn "$file" summary
 done
 ```
 
-## CI/CD Integration
+## Integração com CI/CD
 
-### GitHub Actions Example
+### Exemplo GitHub Actions
 
 ```yaml
-name: BPMN Analysis
+name: Análise BPMN
 on: [push, pull_request]
 
 jobs:
@@ -229,43 +228,43 @@ jobs:
         with:
           submodules: true
 
-      - name: Validate BPMN files
+      - name: Validar arquivos BPMN
         run: |
           apt-get update
           apt-get install -y libxml2-utils libxslt1-tools
 
-          for file in .docs/processes/*.bpmn; do
+          for file in .docs/processos/*.bpmn; do
             .claude/skills/bpmn/navigator.sh "$file" summary
           done
 ```
 
-## Advanced Configuration
+## Configuração Avançada
 
-### Custom Skill Alias
+### Alias Customizado para a Skill
 
-Some Claude Code setups allow custom aliases. You might configure:
+Algumas instalações do Claude Code permitem aliases personalizados. Você pode configurar:
 
 ```bash
-# In your Claude Code config
-alias process-analysis="/bpmn"
+# Na configuração do Claude Code
+alias analise-processo="/bpmn"
 ```
 
-### Environment Variables
+### Variáveis de Ambiente
 
-Set up environment-specific settings:
+Configure variáveis específicas do ambiente:
 
 ```bash
-export BPMN_SKILL_PATH="/path/to/chat_with_bpmnjs"
+export BPMN_SKILL_PATH="/caminho/para/chat_with_bpmnjs"
 export BPMN_TIMEOUT=30
 ```
 
-## Support
+## Suporte
 
-- See [README.md](README.md) for usage examples
-- See [SETUP.md](SETUP.md) for installation help
-- See [DEVELOPMENT.md](DEVELOPMENT.md) for contribution guidelines
-- Open an issue on GitHub for bugs or feature requests
+- Ver [README.md](README.md) para exemplos de uso
+- Ver [SETUP.md](SETUP.md) para ajuda na instalação
+- Ver [DEVELOPMENT.md](DEVELOPMENT.md) para contribuir
+- Abra uma issue no GitHub para bugs ou sugestões
 
-## License
+## Licença
 
-MIT License - See [LICENSE](LICENSE)
+MIT License - Ver [LICENSE](LICENSE)

@@ -104,16 +104,16 @@ new_command)
 | `new_command` | Descrição | `new_command ARG` |
 ```
 
-## Integration with Claude Code
+## Integração com Claude Code
 
-The skill is registered in `.claude/skills/` when set up as a submodule or symlink.
+A skill é registrada em `.claude/skills/` quando configurada como submodule ou symlink.
 
-For local use:
-1. Copy `SKILL.md` to `.claude/skills/bpmn/SKILL.md`
-2. Copy `navigator.sh` to `.claude/skills/bpmn/navigator.sh`
-3. Or configure a symlink
+Para uso local:
+1. Copie `SKILL.md` para `.claude/skills/bpmn/SKILL.md`
+2. Copie `navigator.sh` para `.claude/skills/bpmn/navigator.sh`
+3. Ou configure um symlink
 
-See [INTEGRATION.md](INTEGRATION.md) for detailed setup instructions.
+Ver [INTEGRATION.md](INTEGRATION.md) para instruções detalhadas de setup.
 
 ## Reporting Bugs
 
