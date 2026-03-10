@@ -1,134 +1,271 @@
-# Integração com V360
+# Integration with Claude Code
 
-## Como um Submodule
+This tool can be integrated with Claude Code as a skill to provide interactive BPMN process analysis.
 
-Para integrar `chat_with_bpmnjs` como submodule do v360:
+## Prerequisites
+
+- Claude Code installed and configured
+- `chat_with_bpmnjs` repository cloned locally
+- Dependencies installed (see SETUP.md)
+
+## Installation Methods
+
+### Method 1: Symlink (Development)
+
+For local development or quick testing:
 
 ```bash
-cd /path/to/v360
-git submodule add git@github.com:virtual360-io/chat_with_bpmnjs.git .claude/skills/chat_with_bpmnjs
-```
-
-Depois, adicione o skill ao `.claude/skills/` para que seja reconhecido automaticamente.
-
-## Como uma Skill no Claude Code
-
-1. **Setup Inicial**
-
-```bash
-# Após clonar chat_with_bpmnjs
-cd chat_with_bpmnjs
+# Clone or navigate to your chat_with_bpmnjs directory
+cd /path/to/chat_with_bpmnjs
 chmod +x navigator.sh
+
+# Create symlink in Claude Code skills directory
+# Adjust path based on your Claude Code setup
+ln -s "$(pwd)" ~/.claude/skills/bpmn
+
+# Or manually:
+ln -s /path/to/chat_with_bpmnjs ~/.claude/skills/bpmn
 ```
 
-2. **Uso via Claude Code**
+### Method 2: Git Submodule (Recommended)
+
+For projects using git, add as a submodule:
 
 ```bash
-/bpmn "/caminho/seu_processo.bpmn" "comando"
+cd /path/to/your/project
+
+# Add submodule to .claude/skills
+git submodule add git@github.com:virtual360-io/chat_with_bpmnjs.git .claude/skills/bpmn
+
+# Commit
+git add .gitmodules .claude/skills/bpmn
+git commit -m "chore: add chat_with_bpmnjs as skill submodule"
 ```
 
-3. **Configuração em v360**
+### Method 3: Direct Copy
 
-Atualize `.claude/skills/` para include `chat_with_bpmnjs`:
+For isolated environments:
 
 ```bash
-# Option 1: Symlink
-ln -s /Users/victorcampos/Workspace/chat_with_bpmnjs /Users/victorcampos/Workspace/v360/.claude/skills/chat_with_bpmnjs
-
-# Option 2: Git submodule
-git submodule add git@github.com:virtual360-io/chat_with_bpmnjs.git .claude/skills/chat_with_bpmnjs
+cd /path/to/your/project
+cp -r /path/to/chat_with_bpmnjs .claude/skills/bpmn
 ```
 
-## Estrutura Esperada
+## Verifying Installation
 
-```
-.claude/skills/chat_with_bpmnjs/
-├── navigator.sh     # Script principal
-├── SKILL.md         # Metadata e instruções
-├── README.md        # Documentação
-├── DEVELOPMENT.md   # Guia de desenvolvimento
-└── LICENSE          # MIT License
-```
-
-## Ambiente
-
-O script requer:
-
-- `bash` (≥ 3.2)
-- `xmllint` (libxml2)
-- `xsltproc` (libxslt)
-
-Instalação:
+After installation, verify the skill is recognized:
 
 ```bash
-# macOS
-brew install libxml2 libxslt
+# Check if SKILL.md exists
+ls -la ~/.claude/skills/bpmn/SKILL.md
 
-# Ubuntu/Debian
-sudo apt-get install libxml2-utils libxslt1-tools
+# Or for project-specific:
+ls -la .claude/skills/bpmn/SKILL.md
 
-# CentOS/RHEL
-sudo yum install libxml2 libxslt
+# Make script executable
+chmod +x ~/.claude/skills/bpmn/navigator.sh
 ```
 
-## Atualizações
+## Using the Skill
 
-Para manter sincronizado como submodule:
+Once installed, use the `/bpmn` skill in Claude Code:
 
 ```bash
-# No v360, atualizar submodule
-git submodule update --remote .claude/skills/chat_with_bpmnjs
+/bpmn "/path/to/your/process.bpmn" "Analyze the flow"
+```
 
-# Ou fazer pull manual
-cd .claude/skills/chat_with_bpmnjs
+### Examples
+
+```bash
+# Get overview
+/bpmn "process.bpmn" summary
+
+# Identify bottlenecks
+/bpmn "process.bpmn" "What are the bottlenecks?"
+
+# Find error handling paths
+/bpmn "process.bpmn" "How are errors handled?"
+
+# Suggest improvements
+/bpmn "process.bpmn" "Suggest improvements"
+```
+
+## Directory Structure
+
+Expected structure in your Claude Code setup:
+
+```
+.claude/
+└── skills/
+    └── bpmn/                  # or named differently
+        ├── navigator.sh       # Main script
+        ├── SKILL.md           # Skill metadata
+        ├── README.md          # Documentation
+        ├── DEVELOPMENT.md     # Dev guide
+        ├── LICENSE            # MIT License
+        └── .gitignore         # Git ignore rules
+```
+
+## Updating
+
+### For Symlinked Version
+No action needed - always uses latest from source directory.
+
+### For Submodule Version
+
+```bash
+# Update to latest version
+git submodule update --remote .claude/skills/bpmn
+
+# Or manually pull
+cd .claude/skills/bpmn
 git pull origin main
 cd ../..
-git add .claude/skills/chat_with_bpmnjs
-git commit -m "chore: update chat_with_bpmnjs submodule"
+
+# Commit update
+git add .claude/skills/bpmn
+git commit -m "chore: update bpmn skill submodule"
+```
+
+### For Copied Version
+
+```bash
+# Remove old copy
+rm -rf .claude/skills/bpmn
+
+# Copy new version
+cp -r /path/to/chat_with_bpmnjs .claude/skills/bpmn
 ```
 
 ## Troubleshooting
 
-### Skill não aparece
+### Skill Not Recognized
 
-1. Verifique se o arquivo SKILL.md está presente:
+1. **Check file exists:**
 ```bash
-ls -la /Users/victorcampos/Workspace/chat_with_bpmnjs/SKILL.md
+ls -la ~/.claude/skills/bpmn/SKILL.md
 ```
 
-2. Reinicie Claude Code:
+2. **Verify permissions:**
 ```bash
-# Limpar cache de skills
+chmod +x ~/.claude/skills/bpmn/navigator.sh
+```
+
+3. **Restart Claude Code** - Skills are cached on startup
+
+4. **Clear skill cache (if supported):**
+```bash
+# Location varies by OS/installation
 rm -rf ~/.cache/claude-code/skills
 ```
 
-3. Verifique permissões:
+### Script Execution Fails
+
+1. **Verify dependencies:**
 ```bash
-chmod +x /Users/victorcampos/Workspace/chat_with_bpmnjs/navigator.sh
+which xmllint xsltproc bash
 ```
 
-### Script falha
-
-1. Verifique dependências:
+2. **Test directly:**
 ```bash
-which xmllint
-which xsltproc
+~/.claude/skills/bpmn/navigator.sh "your_file.bpmn" summary
 ```
 
-2. Teste com arquivo BPMN válido:
+3. **Debug mode:**
 ```bash
-./navigator.sh "/Users/victorcampos/Downloads/Fluxo de Material - Brasil.bpmn" summary
+bash -x ~/.claude/skills/bpmn/navigator.sh "your_file.bpmn" summary
 ```
 
-3. Debug com bash -x:
+### Permission Denied
+
 ```bash
-bash -x navigator.sh "seu_arquivo.bpmn" summary
+# Fix permissions
+chmod +x ~/.claude/skills/bpmn/navigator.sh
+chmod +x ~/.claude/skills/bpmn/navigator.sh
 ```
 
-## Roadmap de Integração
+## Integration Patterns
 
-- [ ] Publicar no GitHub (virtual360-io/chat_with_bpmnjs)
-- [ ] Adicionar como submodule ao v360
-- [ ] CI/CD: testes automáticos
-- [ ] Liberar como ferramenta pública
-- [ ] Documentar em docs.v360.io
+### Pattern 1: Local Analysis
+
+Use for quick analysis of local BPMN files:
+
+```bash
+/bpmn "~/Downloads/my_process.bpmn" "Identify critical paths"
+```
+
+### Pattern 2: Project Documentation
+
+Store BPMNs in project and analyze during development:
+
+```bash
+/bpmn ".docs/processes/workflow.bpmn" "Generate improvement suggestions"
+```
+
+### Pattern 3: Batch Analysis
+
+Script multiple analyses:
+
+```bash
+for file in .docs/processes/*.bpmn; do
+  echo "=== Analyzing $file ==="
+  /bpmn "$file" summary
+done
+```
+
+## CI/CD Integration
+
+### GitHub Actions Example
+
+```yaml
+name: BPMN Analysis
+on: [push, pull_request]
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: Validate BPMN files
+        run: |
+          apt-get update
+          apt-get install -y libxml2-utils libxslt1-tools
+
+          for file in .docs/processes/*.bpmn; do
+            .claude/skills/bpmn/navigator.sh "$file" summary
+          done
+```
+
+## Advanced Configuration
+
+### Custom Skill Alias
+
+Some Claude Code setups allow custom aliases. You might configure:
+
+```bash
+# In your Claude Code config
+alias process-analysis="/bpmn"
+```
+
+### Environment Variables
+
+Set up environment-specific settings:
+
+```bash
+export BPMN_SKILL_PATH="/path/to/chat_with_bpmnjs"
+export BPMN_TIMEOUT=30
+```
+
+## Support
+
+- See [README.md](README.md) for usage examples
+- See [SETUP.md](SETUP.md) for installation help
+- See [DEVELOPMENT.md](DEVELOPMENT.md) for contribution guidelines
+- Open an issue on GitHub for bugs or feature requests
+
+## License
+
+MIT License - See [LICENSE](LICENSE)
